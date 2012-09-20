@@ -23,11 +23,11 @@ class Problem:
 		return self.Re
     
 	def get_gravity_force(self):
-		return self.param['m']*g
+		return self.param['m']*self.g
 
 	def get_buoyancy_force(self):
 	        param = self.param
-	        return -param['V']*param['rho']*g
+	        return -param['V']*param['rho']*self.g
 
 	def get_drag_force_stokes(self,v):
 		self.v = v
@@ -41,10 +41,10 @@ class Problem:
 
 	def get_drag_force(self,v):
 		self.v = v
-		if re(self.v) < 1:
-			return get_drag_force_stokes(self.v)
+		if self.re(self.v) < 1:
+			return self.get_drag_force_stokes(self.v)
 		else:
-			return get_drag_force_quadratic(self.v)
+			return self.get_drag_force_quadratic(self.v)
 		
 
 if __name__ == '__main__':
