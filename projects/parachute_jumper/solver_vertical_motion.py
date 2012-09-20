@@ -12,7 +12,7 @@ class Solver:
     def __init__(self, problem):
         self.problem = problem
         self.dt = 0.1
-        self.v = [problem.v0]
+        self.v = [problem.get_initial_condition]
 
     def set_timestep(self,dt):
         self.dt = dt
@@ -24,11 +24,11 @@ class Solver:
         N = int(T/float(dt))
         for i in range(N-1):
             # Use Stokes drag model
-            if(problem.Re(v[i]) < 1):
-                v[i+1] = ((-problem.a_s*dt*0.5 + 1)*v[i] + problem.b_s*dt)/float(1 + problem.a_s*dt*0.5)
+            if(problem.re(v[i]) < 1):
+                v[i+1] = ((-problem.a_s*dt*0.5 + 1)*v[i] + problem.b*dt)/float(1 + problem.a_s*dt*0.5)
             # Use quadratic drag model
             else:
-                v[i+1] = (v[i] + dt*problem.b_q)/float(1+dt*problem.a_q*abs(v[i])) 
+                v[i+1] = (v[i] + dt*problem.b)/float(1+dt*problem.a_q*abs(v[i])) 
 
         return v
 
