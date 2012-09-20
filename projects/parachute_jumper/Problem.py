@@ -1,6 +1,9 @@
 from numpy import pi
 
 class Problem:
+	"""This class takes in a dictionary with all the parameters.
+	It gives back the drag force after checking the re.
+	""" 
 	def __init__(self, param):
 		self.param = param
 		self.g = -9.81
