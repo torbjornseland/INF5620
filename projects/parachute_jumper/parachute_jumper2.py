@@ -1,18 +1,24 @@
 from Problem import Problem
+from read_file import read_file
+import sys
+from numpy import linspace
+from scitools.std import plot, figure
 
 
-class Problem(Problem):
+
+class Problem_Parachute(Problem):
     def __init__(self,parameters):
         self.param = parameters
         self.g = -9.81;
 
     def initial_condition(self, init_dict):
         par = self.param
-        init_dict['p0'] = init_dict['rho0']*par['R']*self.T(init_dict['z0'])/float(par['M'])
+        init_dict['rho0'] = par['rho']
+        init_dict['p0'] = par['rho']*par['R']*self.T(init_dict['z0'])/float(par['M'])
         self.init_dict = init_dict
 
     def get_initial_condition(self):
-        return init_dict;
+        return self.init_dict
 
     def dz(self, v):
         return v
@@ -26,14 +32,14 @@ class Problem(Problem):
         return p*par['M']/float(par['R']*self.T(z))
 
     def dv(self, v, rho):
-        par = self.parameters
+        par = self.param
         # Update rho in parameters such that it can be used to 
         # calculate drag force
         par['rho'] = rho;
         f_d = self.get_drag_force(v)
         return f_d/par['m'] + self.g - (rho/par['rho_b'])*self.g
 
-    def use_parascute(self):
+    def use_parachute(self):
         return 'Tp' in self.param.keys()
 
     def get_parachute(self):
@@ -65,11 +71,11 @@ class Solver:
 
         problem = self.problem
 
-        if problem.use_paraschute():
+        if problem.use_parachute():
             counter = 0
             flag = True
             # Run as until parachuter hits the ground
-            while(z[-1] > 0):
+            while(self.z[-1] > 0):
                 if(counter*dt >= problem.get_parachute() and flag):
                     problem.update_parameters()
                     flag = False
@@ -77,7 +83,7 @@ class Solver:
                 counter += 1
 
         else:
-            while(z[-1] > 0):
+            while(self.z[-1] > 0):
                 self.iteration();
 
         return self.z,self.v
@@ -100,8 +106,20 @@ class Solver:
 
 
 if __name__ == '__main__':
-    """
-	t = linspace(0,par['dt']*len(v),len(v))
+
+        parameters = read_file(sys.argv[1:])
+        init_cond = {'v0':0,'z0':5000}
+        problem = Problem_Parachute(parameters)
+        problem.initial_condition(init_cond)
+
+        dt = 0.01
+
+        c = Solver(problem)
+        c.set_timestep(dt)
+        z,v = c.solve()
+
+	t = linspace(0,dt*len(v),len(v))
 	plot(t,z)
 	figure()
-	plot(t, v)"""
+	plot(t, v)
+	raw_input()
