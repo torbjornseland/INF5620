@@ -1,11 +1,13 @@
+from Problem import Problem
 
-class Problem:
+
+class Problem(Problem):
     def __init__(self,parameters):
-        self.parameters = parameters
+        self.param = parameters
         self.g = -9.81;
 
     def initial_condition(self, init_dict):
-        par = self.parameters
+        par = self.param
         init_dict['p0'] = init_dict['rho0']*par['R']*self.T(init_dict['z0'])/float(par['M'])
         self.init_dict = init_dict
 
@@ -16,11 +18,11 @@ class Problem:
         return v
 
     def dp(self,z):
-        par = self.parameters
+        par = self.param
         return par['M']*self.g/float(par['Rs']*(par['T0']+par['L']*z))
 
     def density(self,p,z):
-        par = self.parameters
+        par = self.param
         return p*par['M']/float(par['R']*self.T(z))
 
     def dv(self, v, rho):
@@ -32,17 +34,17 @@ class Problem:
         return f_d/par['m'] + self.g - (rho/par['rho_b'])*self.g
 
     def use_parascute(self):
-        return 'Tp' in self.parameters.keys()
+        return 'Tp' in self.param.keys()
 
     def get_parachute(self):
-        return self.parameters['Tp']
+        return self.param['Tp']
 
     def update_parameters(self):
-        self.parameters['A'] = self.parameters['Ap']
-        self.parameters['C_D'] = self.parameters['C_Dp']
+        self.param['A'] = self.param['Ap']
+        self.param['C_D'] = self.param['C_Dp']
 
     def T(self,z):
-        par = self.parameters
+        par = self.param
         return par['T0'] - par['L']*z
 
 
