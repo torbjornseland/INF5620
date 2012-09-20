@@ -1,4 +1,4 @@
-from numpy import pi
+from numpy import pi, sqrt
 
 class Problem:
 	"""This class takes in a dictionary with all the parameters.
@@ -45,7 +45,9 @@ class Problem:
 			return self.get_drag_force_stokes(self.v)
 		else:
 			return self.get_drag_force_quadratic(self.v)
-		
+
+	def get_terminalVelocity(self):
+	        return - sqrt(abs(self.b)/float(self.a_q))
 
 if __name__ == '__main__':
 	param = {'rho':1.2041, 'rho_b':1000, 'v0':0, 'my':18.27*10**(-6), 'm':75, 'd':0.5, 'C_D':1.15, 'V':0.075, 'A':0.3*1.8}
