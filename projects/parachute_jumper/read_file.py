@@ -2,10 +2,8 @@
 import sys
 
 
-
-
-
 def read_file(infilename0, infilename1):
+	'''Method to read 2 files and store them as dictionaries'''
 	try:
 	    infilename0 = sys.argv[1]; infilename1 = sys.argv[2]
 	except:
