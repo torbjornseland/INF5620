@@ -14,7 +14,7 @@ class Problem_Parachute(Problem):
     def initial_condition(self, init_dict):
         par = self.param
         init_dict['rho0'] = par['rho']
-        init_dict['p0'] = par['rho']*par['R']*self.T(init_dict['z0'])/float(par['M'])
+        init_dict['p0'] = par['rho']*par['Rs']*self.T(init_dict['z0'])/float(par['M'])
         self.init_dict = init_dict
 
     def get_initial_condition(self):
@@ -29,7 +29,7 @@ class Problem_Parachute(Problem):
 
     def density(self,p,z):
         par = self.param
-        return p*par['M']/float(par['R']*self.T(z))
+        return p*par['M']/float(par['Rs']*self.T(z))
 
     def dv(self, v, rho):
         par = self.param
@@ -58,7 +58,7 @@ class Solver:
     def __init__(self, problem):
         self.problem = problem
         init_cond = problem.get_initial_condition()
-        self.z = [init_cond['v0']]
+        self.z = [init_cond['z0']]
         self.p = init_cond['p0']
         self.rho = init_cond['rho0']
         self.v = [init_cond['v0']]
@@ -101,7 +101,7 @@ class Solver:
             p = p + dt*self.problem.dp(z[-1])
             z.append(z[-1] + dt*problem.dz(v[-1]))
             v.append(v[-1] + dt*problem.dv(v[-1],rho))
-            rho = problem.density(p)
+            rho = problem.density(p,z[-1])
 
 
 
@@ -119,7 +119,7 @@ if __name__ == '__main__':
         z,v = c.solve()
 
 	t = linspace(0,dt*len(v),len(v))
-	plot(t,z)
+	plot(t,z,title="Height of parachuter as function of time")
 	figure()
-	plot(t, v)
+	plot(t, v, title="Velocity of parachuter as function of time")
 	raw_input()
