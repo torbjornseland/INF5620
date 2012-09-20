@@ -18,9 +18,16 @@ class Problem:
 		return self.param['v0']
 
 	def re(self,v):
-		self.v = v
-		self.Re = (param['d']*abs(self.v)*param['rho'])/param['my']
+		param = self.param
+		self.Re = (param['d']*abs(v)*param['rho'])/param['my']
 		return self.Re
+    
+    def get_gravity_force(self):
+        return self.param['m']*g
+
+    def get_buoyancy_force(self):
+        param = self.param
+        return -param['V']*param['rho']*g
 
 	def get_drag_force_stokes(self,v):
 		self.v = v

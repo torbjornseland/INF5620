@@ -1,22 +1,9 @@
-rho 0.79 #desity of air at 20 degree c[kg/m**3]
 rho_b 1003
-v0 0
-my 18.27*10**(-6)
+m 80
 d 0.5
 C_D 1.0 
 V 0.08
 A 0.9
-theta 0.5
-T 50 
-N 100000
-epsilon 1
-g -9.81
-dt 0.01
-z0 5000
-T 288
-TS 288
-R 8.34
+C_Dp 1.5
 TP 20
 AP 12
-L -0.0065
-C_Dp 1.5
