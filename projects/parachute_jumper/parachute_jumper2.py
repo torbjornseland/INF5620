@@ -71,11 +71,13 @@ class Solver:
 
         problem = self.problem
 
+        # If the parachute should be open
         if problem.use_parachute():
             counter = 0
             flag = True
-            # Run as until parachuter hits the ground
+            # Run until parachuter hits the ground
             while(self.z[-1] > 0):
+                # Parachute opens
                 if(counter*dt >= problem.get_parachute() and flag):
                     problem.update_parameters()
                     flag = False
@@ -83,6 +85,7 @@ class Solver:
                 counter += 1
 
         else:
+            # Run until parachuter (without parachute) hits the ground   
             while(self.z[-1] > 0):
                 self.iteration();
 
@@ -101,6 +104,8 @@ class Solver:
             p = p + dt*self.problem.dp(z[-1])
             z.append(z[-1] + dt*problem.dz(v[-1]))
             v.append(v[-1] + dt*problem.dv(v[-1],rho))
+
+            # rho must be updated last to compute it for the correct time step
             rho = problem.density(p,z[-1])
 
 
