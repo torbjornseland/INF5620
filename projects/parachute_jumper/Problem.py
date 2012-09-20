@@ -11,17 +11,14 @@ class Problem:
 	def set_initial_condition(self,v0):
 		self.param['v0']= v0
 
+	def get_initial_condition(self):
+		return self.param['v0']
+
 	def re(self,v):
 		self.v = v
 		self.Re = (param['d']*abs(self.v)*param['rho'])/param['my']
 		return self.Re
-"""
-	def force(self):
-		self.g = -9.81
-		self.gravity = self.param['m']*self.g
-		self.buoyancy = -self.param['rho']*self.param['V']*self.g
-		return self.gravity+self.buoyancy
-"""
+
 	def get_drag_force_stokes(self,v):
 		self.v = v
 		self.stokes = -3*pi*self.param['d']*self.param['my']*self.v
