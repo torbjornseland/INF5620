@@ -2,33 +2,33 @@
 import sys
 
 
-def read_file(infilename0, infilename1):
-	'''Method to read 2 files and store them as dictionaries'''
-	try:
-	    infilename0 = sys.argv[1]; infilename1 = sys.argv[2]
-	except:
-	    "Usage:",sys.argv[0], "infile0 infile1";sys.exit(1)
+def read_file(filenames):
+	'''Method to read files and store variables them as dictionaries'''
 	
-	infile0 = open(infilename0, "r") # Open first file for reading
-	infile1 = open(infilename1,"r")  # Open secondfile for reading0,
+	# Making sure the list is not empty
+	if len(filenames) < 1:
+		print 'Please make sure the list is not empty'
+		sys.exit(1)
 	
-	# Read file line by line and write it into a dictionary
 	dic={}
-	for line0 in infile0:
-		paire0 = line0.split()
-		dic[paire0[0]] = eval(paire0[1])
-		
-	for line1 in infile1:
-		paire1 = line1.split()
-		dic[paire1[0]] = eval(paire1[1])
-		
-	infile0.close(); infile1.close()
+	for filename in filenames:
+		try:
+			f = open(filename,'r')
+			for line in f:
+				pair = line.split()
+				dic[pair[0]] = eval(pair[1])
+			f.close()
+		except:
+			print 'Something failed'
+			sys.exit(1)
+
 	return dic
 
 if __name__ == '__main__':
-    file1 = sys.argv[1]
-    file2 = sys.argv[2]	
-    mydict = read_file(file1,file2)
-    print mydict  
+	if len(sys.argv) < 2:
+		print 'Please include filenames at command line'
+	else:
+		mydict = read_file(sys.argv[1:])
+	print mydict  
 
 
